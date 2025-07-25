@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Property</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="auth-page-wrapper">
+    <div class="auth-card">
+      <h2>Edit Property</h2>
+      <form action="/landlord/edit-property/<%= property.id %>" method="POST">
+        <div class="input-group">
+          <label class="form-label">Property Name</label>
+          <input type="text" name="name" value="<%= property.name %>" required>
+        </div>
+        <div class="input-group">
+          <label class="form-label">Location</label>
+          <input type="text" name="location" value="<%= property.location %>" required>
+        </div>
+        <div class="input-group">
+          <label class="form-label">Monthly Rent (KES)</label>
+          <input type="number" name="rent" value="<%= property.rent %>" min="1" max="1000000000" required>
+        </div>
+        <button type="submit" class="btn-primary">Save Changes</button>
+      </form>
+      <a href="/landlord/dashboard" class="logout-button" style="margin-top: 20px;">Cancel</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Landlord Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <header class="dashboard-header">
+      <h2>Welcome, <%= user.name %> (Landlord)</h2>
+      <a href="/logout" class="logout-button">Logout</a>
+    </header>
+
+    <main class="dashboard-content">
+      <!-- Add Property -->
+      <section class="dashboard-section">
+        <h3>Add Property</h3>
+        <form action="/landlord/add-property" method="POST">
+          <div class="input-group">
+            <label class="form-label">Property Name</label>
+            <input type="text" name="name" required>
+          </div>
+          <div class="input-group">
+            <label class="form-label">Location</label>
+            <input type="text" name="location" required>
+          </div>
+          <div class="input-group">
+            <label class="form-label">Monthly Rent (KES)</label>
+            <input type="number" name="rent" min="1" required>
+          </div>
+          <button type="submit" class="btn-primary">Add Property</button>
+        </form>
+      </section>
+
+      <!-- Property List -->
+      <section class="dashboard-section">
+        <h3>Your Properties</h3>
+        <% if (properties && properties.length > 0) { %>
+          <ul>
+            <% properties.forEach(prop => { %>
+              <li>
+                <div>
+                  <strong><%= prop.name %></strong><br>
+                  Location: <%= prop.location %><br>
+                  Rent: KES <%= Number(prop.rent).toLocaleString('en-KE') %>
+                </div>
+                <div class="action-buttons" style="margin-top: 10px;">
+                  <a href="/landlord/edit-property/<%= prop.id %>" class="btn-primary" style="background-color:#3498db;">Edit</a>
+                  <form action="/landlord/delete-property/<%= prop.id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn-primary" style="background-color:#e74c3c;" onclick="return confirm('Are you sure?')">Delete</button>
+                  </form>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p>No properties yet.</p>
+        <% } %>
+      </section>
+
+      <!-- Maintenance Requests -->
+      <section class="dashboard-section">
+        <h3>Maintenance Requests</h3>
+        <% if (maintenanceRequests && maintenanceRequests.length > 0) { %>
+          <ul>
+            <% maintenanceRequests.forEach(req => { %>
+              <li>
+                <div>
+                  <strong><%= req.description %></strong><br>
+                  Tenant: <%= req.tenant_name || 'Unknown' %><br>
+                  <span class="status-tag <%= req.status.toLowerCase() %>"><%= req.status %></span>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p>No maintenance requests.</p>
+        <% } %>
+      </section>
+    </main>
+
+    <footer class="footer">
+      &copy; 2025 RentWise. All rights reserved.
+    </footer>
+  </div>
+</body>
+</html>

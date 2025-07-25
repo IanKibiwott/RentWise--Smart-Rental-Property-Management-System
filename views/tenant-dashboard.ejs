@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tenant Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <header class="dashboard-header">
+      <h2>Welcome, <%= user.name %> (Tenant)</h2>
+      <a href="/logout" class="logout-button">Logout</a>
+    </header>
+
+    <main class="dashboard-content">
+      <!-- Assigned Property -->
+      <section class="dashboard-section">
+        <h3>Assigned Property</h3>
+        <% if (property) { %>
+          <div class="card">
+            <p><strong>Property:</strong> <%= property.name || property.address %></p>
+            <p><strong>Location:</strong> <%= property.location %></p>
+            <p><strong>Rent:</strong> KES <%= property.rent %></p>
+          </div>
+        <% } else { %>
+          <p>No property assigned yet.</p>
+        <% } %>
+      </section>
+
+      <!-- Maintenance Requests -->
+      <section class="dashboard-section">
+        <h3>Your Maintenance Requests</h3>
+        <% if (requests && requests.length > 0) { %>
+          <ul>
+            <% requests.forEach(req => { %>
+              <li>
+                <strong><%= req.description %></strong> - 
+                <span class="status-tag <%= req.status.toLowerCase() %>"><%= req.status %></span>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p>No maintenance requests submitted yet.</p>
+        <% } %>
+      </section>
+
+      <!-- Submit Maintenance Request -->
+      <section class="dashboard-section">
+        <h3>Submit a Maintenance Request</h3>
+        <form action="/tenant/maintenance-request" method="POST">
+          <div class="input-group">
+            <label class="form-label">Description</label>
+            <textarea name="description" placeholder="Describe the issue..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Submit Request</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      &copy; 2025 RentWise. All rights reserved.
+    </footer>
+  </div>
+</body>
+</html>

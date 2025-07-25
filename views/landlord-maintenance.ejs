@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Maintenance Requests</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="dashboard-layout">
+  <header class="dashboard-header">
+    <h2>Maintenance Requests</h2>
+    <a href="/landlord/dashboard" class="logout-button">⬅ Back</a>
+  </header>
+
+  <div class="dashboard-content">
+    <section class="dashboard-section">
+      <% if (requests.length > 0) { %>
+        <ul>
+          <% requests.forEach(req => { %>
+            <li>
+              <div>
+                <strong>Property:</strong> <%= req.property_name %><br>
+                <strong>Tenant:</strong> <%= req.tenant_name %><br>
+                <strong>Description:</strong> <%= req.description %><br>
+                <strong>Status:</strong> <%= req.status %><br>
+                <strong>Date:</strong> <%= new Date(req.created_at).toLocaleDateString() %>
+              </div>
+              <div>
+                <% if (req.status === 'Pending') { %>
+                  <form action="/landlord/maintenance/update" method="POST">
+                    <input type="hidden" name="request_id" value="<%= req.id %>" />
+                    <button type="submit" class="btn-primary">Mark as Resolved</button>
+                  </form>
+                <% } else { %>
+                  <span class="status-tag resolved">Resolved</span>
+                <% } %>
+              </div>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>No maintenance requests found.</p>
+      <% } %>
+    </section>
+  </div>
+
+  <footer class="footer">
+    &copy; <%= new Date().getFullYear() %> RentWise. All rights reserved.
+  </footer>
+</body>
+</html>
